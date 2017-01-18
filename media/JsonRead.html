@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<body>
+
+<div ng-app="myApp" ng-controller="customersCtrl" ng-init="mySwitch=true"> 
+<div class="loader" ng-show="mySwitch">Loading data...</div>
+<ul>
+  <li ng-repeat="x in myData">
+    {{ x.firstname + ', ' + x.lastname }}
+  </li>
+
+ 
+</ul>
+<div ng-repeat="x in myData">
+
+<div> search title : 
+  {{ x.firstname }} </div>
+
+<div> search Keywords : 
+  {{ x.lastname }} </div>
+
+  </div>
+
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('customersCtrl', function($scope, $http) {
+ /*
+  $http.get("http://www.w3schools.com/angular/customers.php").then(function (response) {
+      $scope.myData = response.data.records;
+  });*/
+//http://freeapi.byethost24.com/sampleJson.php
+//http://www.w3schools.com/angular/customers.php
+  $http.get('http://127.0.0.1:8000/index_json/')
+  // $http.get('http://www.w3schools.com/angular/customers.php')
+       .success(function (data) {
+        /* $log.debug('in success:', data); // these are the things from the API*/
+         $scope.myData = data.records;
+	
+        // $('.loader').css('display','none');
+         $scope.mySwitch=false;
+         return data.records ;
+
+       })
+       .then(function (data) {/*
+         $log.debug('in chained .then:', data);*/
+         // data is the original server response object, NOT 'a new value'
+         // data.data are the things from the API
+       });
+
+
+});
+
+
+
+
+</script>
+
+</body>
+</html>
